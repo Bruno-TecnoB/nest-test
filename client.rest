@@ -8,13 +8,3 @@ GET {{baseUrl}}
 
 # @name ExemploDeRota
 GET {{baseUrl}}/ex/
-
-### ConceitosManualController Home
-
-# @name ConceitosManualControllerHome
-GET {{baseUrl}}/conceitos-manual
-
-### ConceitosAutomaticoController Home
-
-# @name ConceitosAutomaticoControllerHome
-GET {{baseUrl}}/conceitos-automatico
