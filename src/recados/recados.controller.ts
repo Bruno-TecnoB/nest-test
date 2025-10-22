@@ -10,38 +10,38 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { RecadosService } from './recados.service';
 
 @Controller('recados')
 export class RecadosController {
+  constructor(private readonly recadosService: RecadosService) {}
   // Encontrar todos os recados
   @Get()
   findAll(@Query() pagination: any) {
     const { limit = 10, offset = 0 } = pagination;
-    return `Essa rota retorna todos os recados.
-    Limit=${limit}, Offset=${offset}`;
+    // return `Essa rota retorna todos os recados.
+    //Limit=${limit}, Offset=${offset}`;
+    return this.recadosService.findAll();
   }
 
   // Encontrar um recado
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return `Essa rota retona o recado ${id}`;
+    return this.recadosService.findOne(id);
   }
 
   @Post()
   create(@Body() body: any) {
-    return body;
+    return this.recadosService.create(body);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() body: any) {
-    return {
-      id,
-      body,
-    };
+    this.recadosService.update(id, body);
   }
 
   @Delete()
   remove(@Param('id') id: string) {
-    return `Essa rota apaga o recado ${id}`;
+    this.recadosService.remove(id);
   }
 }
