@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
   Body,
@@ -11,6 +10,8 @@ import {
   Query,
 } from '@nestjs/common';
 import { RecadosService } from './recados.service';
+import { CreateRecadoDto } from './dto/create-recado.dto';
+import { UpdateRecadoDto } from './dto/update-recado.dto';
 
 @Controller('recados')
 export class RecadosController {
@@ -31,17 +32,17 @@ export class RecadosController {
   }
 
   @Post()
-  create(@Body() body: any) {
-    return this.recadosService.create(body);
+  create(@Body() createRecadoDto: CreateRecadoDto) {
+    return this.recadosService.create(createRecadoDto);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() body: any) {
-    this.recadosService.update(id, body);
+  update(@Param('id') id: string, @Body() updateRecadoDto: UpdateRecadoDto) {
+    return this.recadosService.update(id, updateRecadoDto);
   }
 
   @Delete()
   remove(@Param('id') id: string) {
-    this.recadosService.remove(id);
+    return this.recadosService.remove(id);
   }
 }

@@ -11,25 +11,21 @@ GET {{baseUrl}}/recados/1/
 POST {{baseUrl}}/recados/
 Content-Type: application/json
 
-    {
-      texto: 'Novo Recado',
-      de: 'Joana',
-      para: 'João',
-      lido: false,
-      data: new Date(),
-    },
+ {
+  "texto": "Novo Recado",
+  "de": "Joana",
+  "para": "João"
+}
 
 ### Atualiza um recado
-PATCH {{baseUrl}}/recados/1/
+PATCH {{baseUrl}}/recados/2/
 Content-Type: application/json
 
-   {
-      texto: 'Novo Recado',
-      de: 'Joana',
-      para: 'João',
-      lido: false,
-      data: new Date(),
-    },
+{
+  "texto": "Novo Recado",
+  "de": "Joana",
+  "para": "João"
+}
 
 ### Apaga um recado
 DELETE {{baseUrl}}/recados/1/
