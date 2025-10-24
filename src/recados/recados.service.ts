@@ -45,7 +45,7 @@ export class RecadosService {
     return novoRecado;
   }
 
-  update(updateRecadoDto: UpdateRecadoDto) {
+  update(id: string, updateRecadoDto: UpdateRecadoDto) {
     const recadoExistenteIndex = this.recados.findIndex(
       (item) => item.id === +id,
     );
@@ -64,7 +64,7 @@ export class RecadosService {
     }
   }
 
-  remove(id: string) {
+  remove(id: number) {
     const recadoExistenteIndex = this.recados.findIndex(
       (item) => item.id === +id,
     );

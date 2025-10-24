@@ -42,7 +42,7 @@ export class RecadosController {
   }
 
   @Delete()
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: number) {
     return this.recadosService.remove(id);
   }
 }
