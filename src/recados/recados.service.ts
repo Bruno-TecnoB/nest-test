@@ -1,11 +1,18 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/await-thenable */
 import { HttpException, Injectable } from '@nestjs/common';
 import { Recado } from './entities/recado.entity';
 import { CreateRecadoDto } from './dto/create-recado.dto';
 import { UpdateRecadoDto } from './dto/update-recado.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class RecadosService {
+  constructor(
+    @InjectRepository(Recado)
+    private readonly recadoRepository: Repository<Recado>,
+  ) {}
+
   private lastId = 1;
   private recados: Recado[] = [
     {
@@ -15,22 +22,29 @@ export class RecadosService {
       para: 'João',
       lido: false,
       data: new Date(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
   ];
 
-  findAll() {
-    return this.recados;
+  async findAll() {
+    const recados = await this.recadoRepository.find();
+    return recados;
   }
 
-  findOne(id: string) {
-    const recado = this.recados.find((item) => item.id === +id);
+  async findOne(id: number) {
+    const recado = await this.recadoRepository.findOne({
+      where: {
+        id,
+      },
+    });
 
     if (recado) return recado;
 
-    throw new HttpException('Esse erro é do servidor.', 404);
+    throw new HttpException('Erro', 404);
   }
 
-  create(createRecadoDto: CreateRecadoDto) {
+  async create(createRecadoDto: CreateRecadoDto) {
     this.lastId++;
     const id = this.lastId;
     const novoRecado = {
@@ -38,11 +52,13 @@ export class RecadosService {
       ...createRecadoDto,
       lido: false,
       data: new Date(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
     };
 
-    this.recados.push(novoRecado);
+    const recado = await this.recadoRepository.create(novoRecado);
 
-    return novoRecado;
+    return this.recadoRepository.save(recado);
   }
 
   update(id: string, updateRecadoDto: UpdateRecadoDto) {
@@ -59,26 +75,20 @@ export class RecadosService {
 
       this.recados[recadoExistenteIndex] = {
         ...recadoExistente,
-        ...body,
+        ...updateRecadoDto,
       };
     }
   }
 
-  remove(id: number) {
-    const recadoExistenteIndex = this.recados.findIndex(
-      (item) => item.id === +id,
-    );
+  async remove(id: number) {
+    const recado = await this.recadoRepository.findOne({
+      where: {
+        id,
+      },
+    });
 
-    if (recadoExistenteIndex < 0) {
-      throw new HttpException('', 404);
-    }
+    if (!recado) throw new HttpException('Recado não encontrado', 404);
 
-    const recado = this.recados[recadoExistenteIndex];
-
-    if (recadoExistenteIndex >= 0) {
-      this.recados.splice(recadoExistenteIndex, 1);
-
-      return recado;
-    }
+    return this.recadoRepository.remove(recado);
   }
 }
