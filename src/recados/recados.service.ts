@@ -61,34 +61,24 @@ export class RecadosService {
     return this.recadoRepository.save(recado);
   }
 
-  update(id: string, updateRecadoDto: UpdateRecadoDto) {
-    const recadoExistenteIndex = this.recados.findIndex(
-      (item) => item.id === +id,
-    );
-
-    if (recadoExistenteIndex < 0) {
-      throw new HttpException('', 404);
-    }
-
-    if (recadoExistenteIndex >= 0) {
-      const recadoExistente = this.recados[recadoExistenteIndex];
-
-      this.recados[recadoExistenteIndex] = {
-        ...recadoExistente,
-        ...updateRecadoDto,
-      };
-    }
-  }
-
-  async remove(id: number) {
-    const recado = await this.recadoRepository.findOne({
-      where: {
-        id,
-      },
+  async update(id: number, updateRecadoDto: UpdateRecadoDto) {
+    const recado = await this.recadoRepository.preload({
+      id,
+      ...updateRecadoDto,
     });
 
     if (!recado) throw new HttpException('Recado não encontrado', 404);
+    return this.recadoRepository.save(recado);
+  }
 
-    return this.recadoRepository.remove(recado);
+  async remove(id: number) {
+    const recado = await this.recadoRepository.findOneBy({
+      id,
+    });
+    if (recado) {
+      return this.recadoRepository.remove(recado);
+    } else {
+      throw new HttpException('Recado não encontrado', 404);
+    }
   }
 }

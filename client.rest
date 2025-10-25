@@ -6,7 +6,7 @@ GET {{baseUrl}}/recados/
 ?limit=10
 &offset=0
 ### Lista apenas um recado
-GET {{baseUrl}}/recados/1/
+GET {{baseUrl}}/recados/2/
 ### Cria um recado
 POST {{baseUrl}}/recados/
 Content-Type: application/json
@@ -28,7 +28,7 @@ Content-Type: application/json
 }
 
 ### Apaga um recado
-DELETE {{baseUrl}}/recados/1/
+DELETE {{baseUrl}}/recados/2/
 
 ### AppControllerGetHello
 
