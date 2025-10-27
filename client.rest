@@ -22,9 +22,7 @@ PATCH {{baseUrl}}/recados/2/
 Content-Type: application/json
 
 {
-  "texto": "Novo Recado",
-  "de": "Joana",
-  "para": "João"
+  "lido": true
 }
 
 ### Apaga um recado
@@ -39,3 +37,40 @@ GET {{baseUrl}}
 
 # @name ExemploDeRota
 GET {{baseUrl}}/ex/
+
+
+
+
+
+
+
+
+# Pessoas
+### Lista todos os Pessoas
+GET {{baseUrl}}/pessoas/
+?limit=10
+&offset=0
+### Lista apenas uma Pessoa
+GET {{baseUrl}}/pessoas/2/
+### Cria uma Pessoa
+POST {{baseUrl}}/pessoas/
+Content-Type: application/json
+
+ {
+ "email": "juaum@email.com",
+ "password": "123456",
+ "nome": "Bruno"
+
+}
+
+### Apaga uma Pessoa
+DELETE {{baseUrl}}/pessoas/3/
+
+### Atualiza uma pessoa
+PATCH {{baseUrl}}/pessoas/4/
+Content-Type: application/json
+
+{
+  "password": "654321",
+  "nome": "Juaum"
+}

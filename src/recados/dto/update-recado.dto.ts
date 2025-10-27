@@ -1,15 +1,12 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsBoolean, IsOptional } from 'class-validator';
 
 export class UpdateRecadoDto {
-  @IsString()
-  @IsNotEmpty()
   readonly texto?: string;
 
-  @IsString()
-  @IsNotEmpty()
   readonly de?: string;
 
-  @IsString()
-  @IsNotEmpty()
   readonly para?: string;
+  @IsBoolean()
+  @IsOptional()
+  readonly lido?: boolean;
 }
