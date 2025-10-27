@@ -1,6 +1,8 @@
 import {
   IsEmail,
   IsNotEmpty,
+  IsPositive,
+  isPositive,
   IsString,
   MaxLength,
   MinLength,
@@ -20,4 +22,10 @@ export class CreatePessoaDto {
   @MinLength(3)
   @MaxLength(100)
   nome: string;
+
+  @isPositive
+  deId: number;
+
+  @IsPositive
+  paraid: number;
 }
