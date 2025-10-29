@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
   Body,
   Controller,
@@ -13,17 +12,17 @@ import {
 import { RecadosService } from './recados.service';
 import { CreateRecadoDto } from './dto/create-recado.dto';
 import { UpdateRecadoDto } from './dto/update-recado.dto';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Controller('recados')
 export class RecadosController {
   constructor(private readonly recadosService: RecadosService) {}
   // Encontrar todos os recados
   @Get()
-  findAll(@Query() pagination: any) {
-    const { limit = 10, offset = 0 } = pagination;
+  findAll(@Query() paginationDto: PaginationDto) {
     // return `Essa rota retorna todos os recados.
     //Limit=${limit}, Offset=${offset}`;
-    return this.recadosService.findAll();
+    return this.recadosService.findAll(paginationDto);
   }
 
   // Encontrar um recado

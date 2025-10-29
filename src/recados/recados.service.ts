@@ -6,6 +6,7 @@ import { UpdateRecadoDto } from './dto/update-recado.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PessoasService } from 'src/pessoas/pessoas.service';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Injectable()
 export class RecadosService {
@@ -19,8 +20,26 @@ export class RecadosService {
     throw new NotFoundException('Recado não encontrado');
   }
 
-  async findAll() {
-    const recados = await this.recadoRepository.find();
+  async findAll(paginationDto: PaginationDto) {
+    const { limit = 15, offset = 0 } = paginationDto;
+    const recados = await this.recadoRepository.find({
+      take: limit,
+      skip: offset,
+      relations: ['de', 'para'],
+      order: {
+        id: 'asc',
+      },
+      select: {
+        de: {
+          id: true,
+          nome: true,
+        },
+        para: {
+          id: true,
+          nome: true,
+        },
+      },
+    });
     return recados;
   }
 
@@ -28,6 +47,13 @@ export class RecadosService {
     const recado = await this.recadoRepository.findOne({
       where: {
         id,
+      },
+      relations: ['de', 'para'],
+      select: {
+        de: {
+          id: true,
+          nome: true,
+        },
       },
     });
 
@@ -37,19 +63,29 @@ export class RecadosService {
   }
 
   async create(createRecadoDto: CreateRecadoDto) {
-    const de = await this.pessoasService.findOne(createRecadoDto.de);
+    const { deId, paraId } = createRecadoDto;
+    const de = await this.pessoasService.findOne(deId);
+    const para = await this.pessoasService.findOne(paraId);
     const novoRecado = {
-      id,
-      ...createRecadoDto,
+      texto: createRecadoDto.texto,
+      de,
+      para,
       lido: false,
       data: new Date(),
-      createdAt: new Date(),
-      updatedAt: new Date(),
     };
 
     const recado = await this.recadoRepository.create(novoRecado);
+    await this.recadoRepository.save(recado);
 
-    return this.recadoRepository.save(recado);
+    return {
+      ...recado,
+      de: {
+        id: recado.de.id,
+      },
+      para: {
+        id: recado.para.id,
+      },
+    };
   }
 
   async update(id: number, updateRecadoDto: UpdateRecadoDto) {
