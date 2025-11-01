@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Inject,
 } from '@nestjs/common';
 import { PessoasService } from './pessoas.service';
 import { CreatePessoaDto } from './dto/create-pessoa.dto';
@@ -13,7 +14,11 @@ import { UpdatePessoaDto } from './dto/update-pessoa.dto';
 
 @Controller('pessoas')
 export class PessoasController {
-  constructor(private readonly pessoasService: PessoasService) {}
+  constructor(
+    private readonly pessoasService: PessoasService,
+    @Inject('MY_NAME')
+    private readonly myName: string,
+  ) {}
 
   @Post()
   create(@Body() createPessoaDto: CreatePessoaDto) {
@@ -22,6 +27,7 @@ export class PessoasController {
 
   @Get()
   findAll() {
+    console.log(this.myName);
     return this.pessoasService.findAll();
   }
 

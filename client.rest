@@ -74,3 +74,22 @@ Content-Type: application/json
   "password": "654321",
   "nome": "Juaum"
 }
+
+
+
+
+
+
+
+# AUTH
+
+
+### Login
+POST {{baseUrl}}/auth/
+Content-Type: application/json
+
+{
+ "email": "juze@email.com",
+ "password": "123456",
+ "nome": "Juze"
+}

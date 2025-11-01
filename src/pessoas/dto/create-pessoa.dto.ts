@@ -22,9 +22,7 @@ export class CreatePessoaDto {
   @MaxLength(100)
   nome: string;
 
-  @IsPositive()
   deId: number;
 
-  @IsPositive()
   paraId: number;
 }
